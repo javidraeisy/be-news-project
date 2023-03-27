@@ -1,6 +1,16 @@
 const request = require("supertest");
 const app = require("../index");
+const db = require("../db/connection");
+const seed = require("../db/seeds/seed");
+const data = require("../db/data/test-data");
 
+afterAll(() => {
+  db.end();
+});
+
+beforeEach(() => {
+  return seed(data);
+});
 describe("Get / api/topics", () => {
   it("returns with array of objects in topics", () => {
     return request(app)
