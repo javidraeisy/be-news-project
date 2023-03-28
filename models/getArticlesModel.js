@@ -13,7 +13,10 @@ async function getArticlesModels() {
 
 async function getArticleById(id) {
   try {
-    const result = await db.query(`SELECT * FROM articles WHERE id = $1`, [id]);
+    const result = await db.query(
+      `SELECT * FROM articles WHERE article_id = $1`,
+      [id]
+    );
 
     const article = result.rows[0];
     return article;
