@@ -18,9 +18,9 @@ describe("Get / api/topics", () => {
       .get("/api/topics")
       .expect(200)
       .then((response) => {
-        expect(response.body).toBeInstanceOf(Array);
-        expect(response.body.length).toBeGreaterThan(0);
-        response.body.forEach((topic) => {
+        expect(response.body).toBeInstanceOf(Object);
+        expect(response.body.topics.length).toBeGreaterThan(0);
+        response.body.topics.forEach((topic) => {
           expect(topic).toHaveProperty("slug");
           expect(topic).toHaveProperty("description");
         });

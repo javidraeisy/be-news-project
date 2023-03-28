@@ -19,8 +19,8 @@ describe("Get /api/articles/:article_id", () => {
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body).toBeInstanceOf(Object);
-        expect(response.body).toHaveProperty("articleById");
-        expect(response.body.articleById).toEqual({
+        expect(response.body).toHaveProperty("article");
+        expect(response.body.article).toEqual({
           article_id: 4,
           article_img_url:
             "https://images.pexels.com/photos/158651/news-newsletter-newspaper-information-158651.jpeg?w=700&h=700",
@@ -40,5 +40,21 @@ it("should return 404 error if bad pathway", () => {
     .get("/articles/3/northcoders")
     .then((response) => {
       expect(response.status).toBe(404);
+    });
+});
+
+it("should return 404 error if bad pathway", () => {
+  return request(app)
+  .get("/articles/90000")
+  .then((response) => {
+    expect(response.status).toBe(404);
+  });
+});
+
+it("should return 400 error if id is not a number", () => {
+  return request(app)
+    .get("/articles/notAnId")
+    .catch((err) => {
+      expect(err.response.status).toBe(400)
     });
 });
