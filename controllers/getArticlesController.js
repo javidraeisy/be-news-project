@@ -1,8 +1,11 @@
-const { getArticleById, getAllArticles } = require("../models/getArticlesModel");
+const {
+  getArticleById,
+  getAllArticles,
+  getCommentsByArticleId,
+} = require("../models/getArticlesModel");
 
 async function getAllArticlesController(req, res, next) {
   const returnedArticle = await getAllArticles();
-
 
   const returnedArticles = returnedArticle.map((article) => {
     return {
@@ -10,11 +13,9 @@ async function getAllArticlesController(req, res, next) {
       comment_count: Number(article.comment_count),
     };
   });
-  
+
   res.status(200).send({ articles: returnedArticles });
 }
-
-
 
 async function getArticleByIdController(req, res, next) {
   try {
@@ -37,4 +38,29 @@ async function getArticleByIdController(req, res, next) {
   }
 }
 
-module.exports = { getArticleByIdController, getAllArticlesController };
+async function getCommentsByArticleIdController(req, res, next) {
+  try {
+    const { article_id } = req.params;
+    if (isNaN(article_id)) {
+      return res.status(400).send({ message: "Invalid input" });
+    }
+    const comments = await getCommentsByArticleId(article_id);
+    if (!comments) {
+      res.status(404).send({ message: "Comments not found" });
+    } else if (comments.length === 0) {
+      res.status(404).send({
+        message: [],
+      });
+    } else {
+      res.status(200).send({ articleComments: comments });
+    }
+  } catch (error) {
+    errorHandler(error, req, res, next);
+  }
+}
+
+module.exports = {
+  getArticleByIdController,
+  getAllArticlesController,
+  getCommentsByArticleIdController,
+};

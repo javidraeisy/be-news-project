@@ -17,4 +17,21 @@ async function getArticleById(id) {
   return article || Promise.reject("No article found");
 }
 
-module.exports = { getArticleById, getAllArticles };
+
+async function getCommentsByArticleId(id) {
+  try {
+    const result = await db.query(
+      `SELECT comments.*                                                      
+      FROM comments                                                                          
+      WHERE article_id = $1 
+      ORDER BY created_at DESC`,
+      [id]
+    );
+    const comments = result.rows;
+    return comments;
+  } catch (error) {
+    throw error;
+  }
+}
+
+module.exports = { getArticleById, getAllArticles, getCommentsByArticleId };
