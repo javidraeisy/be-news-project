@@ -5,8 +5,6 @@ const seed = require("../db/seeds/seed");
 const data = require("../db/data/test-data");
 const jestSorted = require("jest-sorted");
 
-
-
 afterAll(() => {
   db.end();
 });
@@ -23,19 +21,19 @@ describe("GET /api/articles", () => {
       .then((response) => {
         expect(response.status).toBe(200);
         expect(response.body).toBeInstanceOf(Object);
-        console.log(response.body.article);
         const expectedProperties = [
           "article_id",
           "title",
           "topic",
+          "author",
           "created_at",
           "votes",
           "article_img_url",
           "comment_count",
         ];
-        const articles = response.body.article;
+        const articles = response.body.articles;
 
-        response.body.article.forEach((article) => {
+        response.body.articles.forEach((article) => {
           expect(article).toBeInstanceOf(Object);
           expectedProperties.forEach((property) => {
             expect(article).toHaveProperty(property);

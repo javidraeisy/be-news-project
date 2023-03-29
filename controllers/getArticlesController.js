@@ -11,7 +11,7 @@ async function getAllArticlesController(req, res, next) {
     };
   });
   
-  res.status(200).send({ article: returnedArticles });
+  res.status(200).send({ articles: returnedArticles });
 }
 
 
