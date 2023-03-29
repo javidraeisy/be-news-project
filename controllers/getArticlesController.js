@@ -1,17 +1,20 @@
-// const { getArticleById } = require("../models/getArticlesModel");
+const { getArticleById, getAllArticles } = require("../models/getArticlesModel");
 
-// async function getArticleByIdController(req, res, next) {
-//   const articleId = req.params.article_id;
+async function getAllArticlesController(req, res, next) {
+  const returnedArticle = await getAllArticles();
 
-//   if (isNaN(articleId)) {
-//     return res.status(400).send({ message: "Invalid input" });
-//   }
 
-//   const returnedArticle = await getArticleById(articleId);
+  const returnedArticles = returnedArticle.map((article) => {
+    return {
+      ...article,
+      comment_count: Number(article.comment_count),
+    };
+  });
+  
+  res.status(200).send({ articles: returnedArticles });
+}
 
-//   res.status(200).send({ article: returnedArticle });
-// }
-const { getArticleById } = require("../models/getArticlesModel");
+
 
 async function getArticleByIdController(req, res, next) {
   try {
@@ -34,4 +37,4 @@ async function getArticleByIdController(req, res, next) {
   }
 }
 
-module.exports = { getArticleByIdController };
+module.exports = { getArticleByIdController, getAllArticlesController };
