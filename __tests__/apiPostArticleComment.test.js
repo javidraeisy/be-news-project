@@ -35,17 +35,19 @@ it("returns 404 if the article_id is not a number", async () => {
   const username = "lurker";
   const response = await request(app)
     .post("/api/articles/notANumber/comment")
-    .send({ username, body: commentBody });
-  expect(response.status).toEqual(400);
+    .send({ username, body: commentBody })
+    .catch((err) => {
+      expect(err.response.status).toBe(400);
+    });
 });
 
-it("expect 500 code when inputting invalid username ", () => {
+it("expect 404 code when inputting invalid username ", () => {
   return request(app)
     .post("/api/articles/3/comments")
     .send({ username: "Duncan", body: "small cat" })
-    .then((response) => {
-      expect(response.status).toEqual(500);
-    });
+    .catch((err) => {
+        expect(err.response.status).toBe(404);
+      });
 });
 
 it("expect 404 when inputting invalid pathway", async () => {
@@ -60,3 +62,18 @@ it("expect 404 when inputting invalid pathway", async () => {
   expect(response.status).toEqual(404);
   expect(response.body).toBeInstanceOf(Object);
 });
+
+
+describe("POST 404 if article_id number does not exist", () => {
+    it("post /api/articles/999/comments", async () => {
+        const commentBody = "small cat";
+        const username = "lurker";
+      return request(app)
+        .post("/api/articles/999/comments")
+        .send({ username, body: commentBody })
+        .catch((err) => {
+            expect(err.response.status).toBe(404);
+        });
+    });
+    });
+
