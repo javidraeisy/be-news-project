@@ -36,7 +36,7 @@ it("returns 404 if the article_id is not a number", async () => {
   const response = await request(app)
     .post("/api/articles/notANumber/comment")
     .send({ username, body: commentBody });
-  expect(response.status).toEqual(404);
+  expect(response.status).toEqual(400);
 });
 
 it("expect 500 code when inputting invalid username ", () => {
