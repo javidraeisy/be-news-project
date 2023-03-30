@@ -57,40 +57,37 @@ describe("GET /api/articles/:article_id/comments", () => {
   });
 });
 
-
 describe("GET incorrect pathway should return 404", () => {
-    it("GET /api/articles/:article_id/commenttttt", () => {
-      return request(app)
-        .get("/articles/3/commenttttt")
-        .then((response) => {
-          expect(response.status).toBe(404);
-        });
-    });
+  it("GET /api/articles/:article_id/commenttttt", () => {
+    return request(app)
+      .get("/articles/3/commenttttt")
+      .then((response) => {
+        expect(response.status).toBe(404);
+      });
   });
+});
 
-
-  describe("GET request that article_id is not a number", () => {
-    it("GET /api/articles/'ninety'/comments", () => {
-      return request(app)
-        .get("/api/articles/'ninety'/comments")
-        .then((response) => {
-          expect(response.status).toBe(400);
-          expect(response.body).toEqual({ message: "Invalid input" });
-          expect(response.body).toBeInstanceOf(Object);
-        });
-    });
+describe("GET request that article_id is not a number", () => {
+  it("GET /api/articles/'ninety'/comments", () => {
+    return request(app)
+      .get("/api/articles/'ninety'/comments")
+      .then((response) => {
+        expect(response.status).toBe(400);
+        expect(response.body).toEqual({ message: "Invalid input" });
+        expect(response.body).toBeInstanceOf(Object);
+      });
   });
+});
 
-
-  describe("GET 404 if article_id number does not exist", () => {
-    it("GET /api/articles/1000/comments", () => {
-      return request(app)
-        .get("/api/articles/1000/comments")
-        .then((response) => {
-          expect(response.status).toBe(404);
-          expect(response.body.message).toEqual([]);
-          expect(response.body.message).toBeInstanceOf(Array);
-          expect(response.body).toBeInstanceOf(Object);
-        });
-    });
+describe("GET 404 if article_id number does not exist", () => {
+  it("GET /api/articles/1000/comments", () => {
+    return request(app)
+      .get("/api/articles/1000/comments")
+      .then((response) => {
+        expect(response.status).toBe(404);
+        expect(response.body.message).toEqual([]);
+        expect(response.body.message).toBeInstanceOf(Array);
+        expect(response.body).toBeInstanceOf(Object);
+      });
   });
+});
