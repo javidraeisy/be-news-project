@@ -17,7 +17,7 @@ describe("POST /api/articles/:article_id/comments", () => {
   it("Checks the body for the returned comment", async () => {
     const commentBody = "BIG DOG";
     const username = "lurker";
-    const articleId = 3;
+    const articleId = 4;
 
     const response = await request(app)
       .post(`/api/articles/${articleId}/comments`)
