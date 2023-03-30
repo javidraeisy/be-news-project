@@ -14,8 +14,8 @@ beforeEach(() => {
 });
 
 describe("POST /api/articles/:article_id/comments", () => {
-  it("Checks the body for the returned comment", async () => {
-    const commentBody = "BIG DOG";
+  it("checking the body of returned comment", async () => {
+    const commentBody = "small cat";
     const username = "lurker";
     const articleId = 4;
 
@@ -26,6 +26,37 @@ describe("POST /api/articles/:article_id/comments", () => {
     expect(response.status).toEqual(201);
     expect(response.body).toBeInstanceOf(Object);
 
-    expect(response.body).toEqual({ comment: "BIG DOG" });
+    expect(response.body).toEqual({ comment: "small cat" });
   });
+});
+
+it("returns 404 if the article_id is not a number", async () => {
+  const commentBody = "small cat";
+  const username = "lurker";
+  const response = await request(app)
+    .post("/api/articles/notANumber/comment")
+    .send({ username, body: commentBody });
+  expect(response.status).toEqual(404);
+});
+
+it("expect 500 code when inputting invalid username ", () => {
+  return request(app)
+    .post("/api/articles/3/comments")
+    .send({ username: "Duncan", body: "small cat" })
+    .then((response) => {
+      expect(response.status).toEqual(500);
+    });
+});
+
+it("expect 404 when inputting invalid pathway", async () => {
+  const commentBody = "small cat";
+  const username = "lurker";
+  const articleId = 3;
+
+  const response = await request(app)
+    .post(`/api/articles/${articleId}/commenttttt`)
+    .send({ username, body: commentBody });
+
+  expect(response.status).toEqual(404);
+  expect(response.body).toBeInstanceOf(Object);
 });
