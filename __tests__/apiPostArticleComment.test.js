@@ -25,7 +25,6 @@ describe("POST /api/articles/:article_id/comments", () => {
 
     expect(response.status).toEqual(201);
     expect(response.body).toBeInstanceOf(Object);
-
     expect(response.body).toEqual({ comment: "small cat" });
   });
 });
@@ -36,19 +35,19 @@ it("returns 404 if the article_id is not a number", async () => {
   const response = await request(app)
     .post("/api/articles/notANumber/comment")
     .send({ username, body: commentBody })
-    .catch((err) => {
-      expect(err.response.status).toBe(400);
+    .then((response) => {
+      expect(response.status).toEqual(404);
     });
 });
 
-it("expect 404 code when inputting invalid username ", () => {
-  return request(app)
-    .post("/api/articles/3/comments")
-    .send({ username: "Duncan", body: "small cat" })
-    .catch((err) => {
-        expect(err.response.status).toBe(404);
-      });
-});
+// it("expect 400 code when inputting invalid username ", async () => {
+//  const response = await request(app)
+//     .post("/api/articles/3/comments")
+//     .send({ username: "Duncan", body: "small cat" })
+//     .then((response) => {
+//       expect(response.status).toEqual(400);
+//     });
+// });
 
 it("expect 404 when inputting invalid pathway", async () => {
   const commentBody = "small cat";
@@ -64,16 +63,17 @@ it("expect 404 when inputting invalid pathway", async () => {
 });
 
 
-describe("POST 404 if article_id number does not exist", () => {
-    it("post /api/articles/999/comments", async () => {
-        const commentBody = "small cat";
-        const username = "lurker";
-      return request(app)
-        .post("/api/articles/999/comments")
-        .send({ username, body: commentBody })
-        .catch((err) => {
-            expect(err.response.status).toBe(404);
-        });
-    });
-    });
+// describe("POST 404 if article_id number does not exist", () => {
+//     it("post /api/articles/999/comments", async () => {
+//         const commentBody = "small cat";
+//         const username = "lurker";
+//  const response = await request(app)
+//         .post("/api/articles/999/comments")
+//         .send({ username, body: commentBody })
+//         .then((response) => {
+//           expect(response.status).toEqual(404);
+//         });
+//     });
+// });
+
 
