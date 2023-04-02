@@ -16,13 +16,13 @@ exports.fetchSpecificArticle = (id) => {
 }
 
 exports.addArticleComment = (comment, articleNumber) => {
-  const { body, username } = comment
-  const values = [body, username, articleNumber]
+    const body = comment.body;
+    const username = comment.username;
   return db.query(`
   INSERT INTO comments (body, author, article_id) 
   VALUES ($1, $2, $3)
   RETURNING *;
-  `, values).then((result) => {
+  `, [body, username, articleNumber]).then((result) => {
 
       return result.rows[0]
   })

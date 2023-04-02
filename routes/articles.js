@@ -7,7 +7,7 @@ const {
   getCommentsByArticleIdController,
 } = require("../controllers/getArticlesController");
 
-const  postArticleComments = require("../controllers/postArticlesController");
+const  { postArticleComments } = require("../controllers/postArticlesController");
 
 router.get("/", getAllArticlesController);
 router.get("/:article_id", getArticleByIdController);
