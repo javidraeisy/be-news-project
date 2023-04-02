@@ -229,14 +229,14 @@ describe("GET /api/articles", () => {
       });
   });
   
-//   it("expect 400 code when inputting invalid username ", async () => {
-//    const response = await request(app)
-//       .post("/api/articles/3/comments")
-//       .send({ username: "Duncan", body: "small cat" })
-//       .then((response) => {
-//         expect(response.status).toEqual(400);
-//       });
-//   });
+  it("expect 400 code when inputting invalid username ", async () => {
+   const response = await request(app)
+      .post("/api/articles/3/comments")
+      .send({ username: "Duncan", body: "small cat" })
+      .then((response) => {
+        expect(response.status).toEqual(400);
+      });
+  });
   
   it("expect 404 when inputting invalid pathway", async () => {
     const commentBody = "small cat";
