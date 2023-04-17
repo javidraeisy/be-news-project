@@ -8,7 +8,8 @@ const {
   } = require("./errorsHandling/errorHandler");
 
 const app = express();
-
+const cors = require("cors");
+app.use(cors());
 app.use(express.json());
 
 const topicsRouter = require("./routes/topics");
