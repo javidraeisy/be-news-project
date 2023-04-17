@@ -1,19 +1,29 @@
-const db = require("../db/connection");
+const db = require('../db/connection')
 
-async function postComment(articleId, username, body) {
-  try {
-    const result = await db.query(
-      `INSERT INTO comments (article_id, author, body) 
-      VALUES ($1, $2, $3) 
-      RETURNING *`,
-      [articleId, username, body]
-    );
-    const comment = result.rows;
+exports.fetchSpecificArticle = (id) => {
 
-    return comment;
-  } catch (error) {
-    throw error;
-  }
+    const articleId = id;
+    return db.query(`SELECT * FROM articles WHERE article_id = $1;`, [articleId]).then((result) => {
+        if (!result.rows.length) {
+
+            return Promise.reject({
+                status: 404,
+                msg: `No article found for article ${id}`
+            })
+        }
+        return result.rows;
+    })
 }
 
-module.exports = postComment;
+exports.addArticleComment = (comment, articleNumber) => {
+    const body = comment.body;
+    const username = comment.username;
+  return db.query(`
+  INSERT INTO comments (body, author, article_id) 
+  VALUES ($1, $2, $3)
+  RETURNING *;
+  `, [body, username, articleNumber]).then((result) => {
+
+      return result.rows[0]
+  })
+}
