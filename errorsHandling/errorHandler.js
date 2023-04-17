@@ -1,4 +1,5 @@
 function handle400Errors(err, req, res, next) {
+
   if (err.status === 400) {
     res.status(400).send({ error: err.message });
   } else if (err.status === 404) {
@@ -31,3 +32,4 @@ module.exports = {
   handle500Errors,
   errorHandler,
 };
+
