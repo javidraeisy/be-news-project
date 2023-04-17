@@ -13,6 +13,7 @@ app.use(express.json());
 
 const topicsRouter = require("./routes/topics");
 const articlesRouter = require("./routes/articles");
+const commentsRouter = require("./routes/comments");
 
 
 
@@ -20,6 +21,8 @@ const articlesRouter = require("./routes/articles");
 app.use("/api/topics", topicsRouter);
 
 app.use("/api/articles", articlesRouter);
+
+app.use("/api/comments", commentsRouter);
 
 app.use(handle400Errors);
 app.use(psqlErrors);
