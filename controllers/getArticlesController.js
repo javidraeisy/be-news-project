@@ -1,20 +1,25 @@
 const {
   getArticleById,
-  getAllArticles,
+  // getAllArticles,
   getCommentsByArticleId,
+  fetchArticles,
+  selectTopic,
 } = require("../models/getArticlesModel");
 
 async function getAllArticlesController(req, res, next) {
-  const returnedArticle = await getAllArticles();
+  const { topic, sort_by, order, limit, p } = req.query;
 
-  const returnedArticles = returnedArticle.map((article) => {
-    return {
-      ...article,
-      comment_count: Number(article.comment_count),
-    };
-  });
+  const articlesPromise = fetchArticles(topic, sort_by, order, limit, p);
+  const checkTopic = selectTopic(topic);
 
-  res.status(200).send({ articles: returnedArticles });
+  Promise.all([articlesPromise, checkTopic])
+    .then((promisesResult) => {
+      const articles = promisesResult[0];
+      res.status(200).send({ articles });
+    })
+    .catch((err) => {
+      next(err);
+    });
 }
 
 async function getArticleByIdController(req, res, next) {
